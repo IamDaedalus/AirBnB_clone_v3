@@ -4,6 +4,7 @@ Contains the FileStorage class
 """
 
 import json
+import models
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
@@ -68,3 +69,22 @@ class FileStorage:
     def close(self):
         """call reload() method for deserializing the JSON file to objects"""
         self.reload()
+
+    def get(self, cls, id):
+        """Returns the object based on the class and its ID
+        or None if not found"""
+        my_dicts = models.storage.all(cls)
+        for v in my_dicts.values():
+            if v.id == id:
+                return v
+        return None
+
+    def count(self, cls=None):
+        """Returns the number of objects in storage matching the given class"""
+        num = 0
+        if cls is None:
+            num += len(models.storage.all(cls).values())
+        else:
+            for i in classes.values():
+                num += len(models.storage.all(i).values())
+        return num
